@@ -36,13 +36,15 @@ Quickstart
 
 Start container using:
 
-    docker run --detach --restart always \
-        --name streaming-server \
-        --hostname streaming-server \
-        --publish 1935:1935 \
-        --publish 8080:8080 \
-        --publish 8443:8443 \
-        dockeirorock/streaming-server
+```sh
+docker run --detach --restart always \
+    --name streaming-server \
+    --hostname streaming-server \
+    --publish 1935:1935 \
+    --publish 8080:8080 \
+    --publish 8443:8443 \
+    dockeirorock/streaming-server
+```
 
 Example
 -------
@@ -58,9 +60,9 @@ Example
 
     * Add media source `Sources` > `+` > `Video Capture Device`
     * Configure streaming server `Controls` > `Settings` > `Stream`
-        - Stream type: `Custom Streaming Server`
-        - URL: `rtmp://localhost/live`
-        - Stream key: `test`
+        * Stream type: `Custom Streaming Server`
+        * URL: `rtmp://localhost/live`
+        * Stream key: `test`
     * Press `Start Streaming` button
 
 3. Go to `http://localhost:9999` URL address in your browser to view the media live.
