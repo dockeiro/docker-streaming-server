@@ -19,7 +19,7 @@ Alternatively you can build the image yourself.
 ```sh
 git clone https://github.com/dockeiro/docker-streaming-server.git && \
 cd docker-streaming-server && \
-ARCH=$(dpkg --print-architecture)&& \
+ARCH=$(dpkg --print-architecture) && \
 echo ARCH loaded: ${ARCH} && \
 docker build --no-cache \
 --build-arg IMAGE=dockeirorock/streaming-server \
