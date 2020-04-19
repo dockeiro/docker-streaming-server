@@ -1,8 +1,8 @@
-FROM codeworksio/nginx:1.15.8-20190219
+FROM dockeirorock/nginx:latest
 
 ARG APT_PROXY
 ARG APT_PROXY_SSL
-ENV NGINX_RTMP_MODULE_VERSION="1.2.1"
+ENV NGINX_RTMP_MODULE_VERSION="1.2.2"
 
 RUN set -ex; \
     \
@@ -15,6 +15,8 @@ RUN set -ex; \
     if [ -n "$APT_PROXY" ]; then echo "Acquire::http { Proxy \"http://${APT_PROXY}\"; };" > /etc/apt/apt.conf.d/00proxy; fi; \
     if [ -n "$APT_PROXY_SSL" ]; then echo "Acquire::https { Proxy \"https://${APT_PROXY_SSL}\"; };" > /etc/apt/apt.conf.d/00proxy; fi; \
     apt-get --yes update; \
+    apt-get --yes upgrade; \
+    apt-get --reinstall install libc-bin; \
     apt-get --yes install \
         $buildDependencies \
         ffmpeg \
@@ -22,7 +24,7 @@ RUN set -ex; \
     cd /tmp; \
     curl -L "https://nginx.org/download/nginx-$NGINX_VERSION.tar.gz" -o nginx-$NGINX_VERSION.tar.gz; \
     tar -xf nginx-$NGINX_VERSION.tar.gz; \
-    curl -L "https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_MODULE_VERSION}.tar.gz" -o nginx-rtmp-module-$NGINX_RTMP_MODULE_VERSION.tar.gz; \
+    curl -L "https://github.com/dockeiro/nginx-rtmp-module/archive/v${NGINX_RTMP_MODULE_VERSION}.tar.gz" -o nginx-rtmp-module-$NGINX_RTMP_MODULE_VERSION.tar.gz; \
     tar -xf nginx-rtmp-module-$NGINX_RTMP_MODULE_VERSION.tar.gz; \
     \
     cd /tmp/nginx-$NGINX_VERSION; \
@@ -40,7 +42,7 @@ RUN set -ex; \
         /usr/local/nginx/modules \
         /var/lib/streaming; \
     \
-    apt-get purge --yes --auto-remove $buildDependencies; \
+    apt-get purge --yes --auto-remove --allow-remove-essential $buildDependencies; \
     rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/* /var/cache/apt/*; \
     rm -f /etc/apt/apt.conf.d/00proxy
 
